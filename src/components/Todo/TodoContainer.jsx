@@ -1,12 +1,17 @@
 import {connect} from "react-redux";
 import Todo from "./Todo";
-import {addTaskActionCreator, complitedTaskActionCreator, updateNewTaskActionCreator} from "../redux/TaskReducer";
+import {
+    addTaskActionCreator,
+    complitedTaskActionCreator,
+    deleteTaskActionCreator, sortAllTaskAC, sortComplitedTaskAC,
+    updateNewTaskActionCreator
+} from "../redux/TaskReducer";
 
 
 let mapStateToProps = (state) => {
     return {
-        tasks: state.todo.tasks,
-        newTask: state.todo.newTask,
+        tasks: state.TaskReducer.tasks,
+        newTask: state.TaskReducer.newTask,
     }
 }
 
@@ -16,12 +21,24 @@ let mapDispatchToProps = (dispatch) => {
             dispatch(addTaskActionCreator())
         },
 
-        onComplitedTaskClick: (id) => {
-            dispatch(complitedTaskActionCreator(id))
+        onDeleteTaskClick: (taskID) => {
+            dispatch(deleteTaskActionCreator(taskID))
+        },
+
+        onComplitedTaskClick: (taskID) => {
+            dispatch(complitedTaskActionCreator(taskID))
         },
 
         onNewTaskChange: (text) => {
             dispatch(updateNewTaskActionCreator(text))
+        },
+
+        onAllBtnClick: () => {
+            dispatch(sortAllTaskAC())
+        },
+
+        onComplitedBtnClick: () => {
+            dispatch(sortComplitedTaskAC())
         },
     }
 }
