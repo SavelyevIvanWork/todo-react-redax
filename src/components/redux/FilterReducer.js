@@ -1,22 +1,14 @@
-const SORT_ALL_TASK = 'SORT_ALL_TASK'
-const SORT_COMPLITED_TASK = 'SORT_COMPLITED_TASK'
+export const SORT_ALL_TASK = 'SORT_ALL_TASK'
+export const SORT_COMPLITED_TASK = 'SORT_COMPLITED_TASK'
+export const SORT_CURRENT_TASK = 'SORT_CURRENT_TASK'
+const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER'
 
-const BASE_FILTER = 'All'
+let baseFilter = SORT_ALL_TASK
 
-const FilterReducer = (state = BASE_FILTER, action) => {
+const FilterReducer = (state = baseFilter, action) => {
     switch (action.type) {
-        case SORT_ALL_TASK:
-            return {
-                ...state,
-                tasks: [...state.tasks]
-            }
-
-        case SORT_COMPLITED_TASK:
-            debugger
-            return {
-                ...state,
-                tasks: [...state.tasks.filter((task) => task.complited)]
-            }
+        case SET_VISIBILITY_FILTER:
+            return action.filter
 
         default:
             return state
@@ -24,12 +16,16 @@ const FilterReducer = (state = BASE_FILTER, action) => {
 
 }
 
-export const sortAllTaskAC = () => {
-    return {type: SORT_ALL_TASK}
+export const sortAllTaskAC = (id) => {
+    return {type: SET_VISIBILITY_FILTER, filter: id}
 }
 
-export const sortComplitedTaskAC = () => {
-    return {type: SORT_COMPLITED_TASK}
+export const sortComplitedTaskAC = (id) => {
+    return {type: SET_VISIBILITY_FILTER, filter: id}
+}
+
+export const sortCurrentTaskAC = (id) => {
+    return {type: SET_VISIBILITY_FILTER, filter: id}
 }
 
 export default FilterReducer

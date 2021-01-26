@@ -1,10 +1,14 @@
+.btn {
+  display: block;
+  border: none;
+  padding: 0;
+  background: #fff;
+  outline: none;
+}
+
 .wrapper {
   width: 30%;
   margin: 0 auto;
-}
-
-.todo {
-  box-shadow: 3px 3px 15px 1px dimgray,-3px -3px 15px 1px grey;
 }
 
 .title-wrapper {
@@ -16,26 +20,6 @@
   font-size: 30px;
 }
 
-.todo__input {
-  box-sizing: border-box;
-  display: block;
-  width: 90%;
-  margin: 0 auto;
-  padding: 15px;
-  border: none;
-  border-bottom: 2px solid lightgrey;
-}
-
-.todo__input-wrapper {
-  padding-bottom: 20px;
-}
-
-ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
 .active {
   text-decoration: line-through;
 }
@@ -43,3 +27,4 @@ ul {
 .hidden {
   display: none;
 }
+

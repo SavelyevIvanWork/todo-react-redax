@@ -1,17 +1,25 @@
 import React from "react";
 import './App.css';
-import TodoContainer from "./components/Todo/TodoContainer";
+import Todo from "./components/Todo/Todo";
+import {connect} from "react-redux";
 
-const App = (props) => {
+const App = () => {
+
     return (
         <div className="wrapper">
             <div className="title-wrapper">
                 <h3 className="title">Your todo list</h3>
             </div>
-            <TodoContainer />
+            <Todo />
         </div>
     );
 }
 
+let mapStateToProps = (state) => {
+    return {
+        tasks: state.TaskReducer.tasks,
+        baseFilter: state.FilterReducer.baseFilter,
+    }
+}
 
-export default App;
+export default connect(mapStateToProps)(App)

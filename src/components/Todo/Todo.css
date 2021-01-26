@@ -1,0 +1,34 @@
+.todo {
+    box-shadow: 3px 3px 15px 1px dimgray,-3px -3px 15px 1px grey;
+}
+
+.todo__input {
+    box-sizing: border-box;
+    display: block;
+    width: 90%;
+    margin: 0 auto;
+    padding: 15px;
+    border: none;
+    border-bottom: 2px solid lightgrey;
+    outline: none;
+}
+
+.todo__input-wrapper {
+    padding-bottom: 20px;
+}
+
+.todo__list {
+    max-height: 300px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
+.todo__list::-webkit-scrollbar {
+    display: none;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}

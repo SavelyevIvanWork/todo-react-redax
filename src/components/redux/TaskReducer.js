@@ -2,17 +2,14 @@ const UPDATE_NEW_TASK = 'UPDATE_NEW_TASK'
 const ADD_TASK = 'ADD_TASK'
 const DELETE_TASK = 'DELETE_TASK'
 const COMPLITED_TASK = 'COMPLITED_TASK'
-const SORT_ALL_TASK = 'SORT_ALL_TASK'
-const SORT_COMPLITED_TASK = 'SORT_COMPLITED_TASK'
+export const ALL_COMPLITED_TASK = 'ALL_COMPLITED_TASK'
+export const ALL_DELETE_TASK = 'ALL_DELETE_TASK'
 
 let initialState = {
-    tasks: [
-        {message: 'BlaBla', id: 1, complited: false},
-        {message: 'BlaBla1', id: 2, complited: false},
-        {message: 'BlaBla2', id: 3, complited: false},
-    ],
+    tasks: [],
     newTask: '',
 }
+
 const TaskReducer = (state = initialState, action) => {
     switch (action.type) {
         case UPDATE_NEW_TASK:
@@ -46,23 +43,24 @@ const TaskReducer = (state = initialState, action) => {
                 })]
             }
 
-        case SORT_ALL_TASK:
+        case ALL_COMPLITED_TASK:
             return {
                 ...state,
-                tasks: [...state.tasks]
+                tasks: [...state.tasks.map((task) => {
+                    task.complited = true
+                    return task
+                })]
             }
 
-        case SORT_COMPLITED_TASK:
-            debugger
+        case ALL_DELETE_TASK:
             return {
                 ...state,
-                tasks: [...state.tasks.filter((task) => task.complited)]
+                tasks: [...state.tasks.filter((task) => !task.complited)]
             }
 
         default:
             return state
     }
-
 }
 
 
@@ -82,12 +80,12 @@ export const complitedTaskActionCreator = (taskID) => {
     return {type: COMPLITED_TASK, id: taskID,}
 }
 
-export const sortAllTaskAC = () => {
-    return {type: SORT_ALL_TASK}
+export const AllComplitedTaskActionCreator = () => {
+    return {type: ALL_COMPLITED_TASK}
 }
 
-export const sortComplitedTaskAC = () => {
-    return {type: SORT_COMPLITED_TASK}
+export const AllDeleteTaskActionCreator = () => {
+    return {type: ALL_DELETE_TASK}
 }
 
 export default TaskReducer
