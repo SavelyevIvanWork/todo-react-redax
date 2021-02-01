@@ -2,26 +2,15 @@ import React from 'react'
 import TodoItem from "./TodoItem/TodoItem";
 import './Todo.css'
 import TodoFilter from "./TodoFilter/TodoFilter";
-import {
-    addTaskActionCreator,
-    complitedTaskActionCreator,
-    deleteTaskActionCreator,
-    updateNewTaskActionCreator
-} from "../redux/TaskReducer";
-import {connect} from "react-redux";
 import {SORT_ALL_TASK, SORT_COMPLITED_TASK, SORT_CURRENT_TASK} from "../redux/FilterReducer";
 import {useMemo} from "react";
-
 
 
 const Todo = (props) => {
     let todos = props.tasks
     let filterTodos = props.filterTodos
 
-    const memo = useMemo(() => getVisibleTodos(filterTodos, todos), [filterTodos, todos])
-
     const getVisibleTodos = (filterTodos, todos) => {
-        console.log(typeof filterTodos)
         switch (filterTodos) {
             case SORT_ALL_TASK:
                 return todos
@@ -33,6 +22,8 @@ const Todo = (props) => {
                 throw new Error('Unknown filter: ' + filterTodos)
         }
     }
+
+    const memo = useMemo(() => getVisibleTodos(filterTodos, todos), [filterTodos, todos])
 
     let onAddTask = (e) => {
         if (e.key === 'Enter' && props.newTask !== '') {
@@ -48,6 +39,7 @@ const Todo = (props) => {
 
     return (
         <div className="todo">
+            {/*<button onClick={props.setTodo}>Add</button>*/}
             <div className="todo__input-wrapper">
                 <input
                     className="todo__input"
@@ -64,7 +56,9 @@ const Todo = (props) => {
                         memo.map((task) => <TodoItem
                             task={task}
                             onDeleteTaskClick={props.onDeleteTaskClick}
-                            onComplitedTaskClick={props.onComplitedTaskClick}/>)
+                            onComplitedTaskClick={props.onComplitedTaskClick}
+                            key={task.id}
+                        />)
                     }
 
                 </ul>
@@ -75,32 +69,4 @@ const Todo = (props) => {
     )
 }
 
-let mapStateToProps = (state) => {
-    return {
-        tasks: state.TaskReducer.tasks,
-        newTask: state.TaskReducer.newTask,
-        filterTodos: state.FilterReducer,
-    }
-}
-
-let mapDispatchToProps = (dispatch) => {
-    return {
-        onAddTaskClick: () => {
-            dispatch(addTaskActionCreator())
-        },
-
-        onDeleteTaskClick: (taskID) => {
-            dispatch(deleteTaskActionCreator(taskID))
-        },
-
-        onComplitedTaskClick: (taskID) => {
-            dispatch(complitedTaskActionCreator(taskID))
-        },
-
-        onNewTaskChange: (text) => {
-            dispatch(updateNewTaskActionCreator(text))
-        },
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps) (Todo)
+export default Todo
