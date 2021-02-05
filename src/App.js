@@ -1,23 +1,26 @@
 import React from "react";
 import './App.css';
+import TodoApp from "./components/TodoApp/TodoApp";
+import {BrowserRouter, Route, Redirect} from "react-router-dom";
+import FormAuthorizationContainer from "./components/FormAuthorization/FormAuthorizationContainer";
 import {connect} from "react-redux";
-import TodoContainer from "./components/Todo/TodoContainer";
 
-const App = () => {
+const App = ({isFetching}) => {
     return (
-        <div className="wrapper">
-            <div className="title-wrapper">
-                <h3 className="title">Your todo list</h3>
-            </div>
-            <TodoContainer />
-        </div>
-    );
+        <BrowserRouter>
+                <Route path='/login' render={() => <FormAuthorizationContainer />} /> {/*Возвращает компонент в виде тега*/}
+                <Route path='/todo' render={() => <TodoApp />} />
+
+                {isFetching ? <Redirect from='/' to='/todo'/>
+                            : <Redirect from='/' to='/login'/>}
+
+        </BrowserRouter>
+    )
 }
 
-let mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
     return {
-        tasks: state.TaskReducer.tasks,
-        baseFilter: state.FilterReducer.baseFilter,
+        isFetching: state.FormReducer.isFetching
     }
 }
 

@@ -44,7 +44,7 @@
     margin: 0;
     padding: 0;
     border: none;
-    background: #ffffff url("../../../Image/dustbin.svg") no-repeat center;
+    background: #ffffff url("../../../../Image/dustbin.svg") no-repeat center;
     background-size: cover;
 
 }

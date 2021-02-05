@@ -1,6 +1,6 @@
 import React from "react";
 import "./TodoItem.css"
-import '../../../Image/dustbin.svg'
+import '../../../../Image/dustbin.svg'
 
 const TodoItem = (props) => {
     let className = ''
@@ -9,7 +9,7 @@ const TodoItem = (props) => {
     }
 
     const onChecked = (e) => {
-        props.onComplitedTaskClick(props.task.id)
+        props.addTodoComplited(props.task.id, props.task.complited = !props.task.complited)
     }
 
     return (
@@ -19,7 +19,10 @@ const TodoItem = (props) => {
         >
             <span className={`todo-list__text`}>{props.task.message}</span>
             <button className='todo-item__button'
-                    onClick={() => {props.onDeleteTaskClick(props.task.id)}}>
+                    onClick={(event) => {
+                        event.stopPropagation()
+                        props.todoDelete(props.task.id)
+                    }}>
                 <span>delete</span>
             </button>
         </li>

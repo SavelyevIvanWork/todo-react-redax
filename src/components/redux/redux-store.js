@@ -2,12 +2,15 @@ import {applyMiddleware, combineReducers, createStore} from "redux";
 import TaskReducer from "./TaskReducer";
 import FilterReducer from "./FilterReducer";
 import thunk from "redux-thunk";
+import FormReducer from "./FormReducer";
+
 
 
 
 let reducers = combineReducers({
     TaskReducer,
-    FilterReducer
+    FilterReducer,
+    FormReducer
 })
 
 let store = createStore(reducers, applyMiddleware(thunk))

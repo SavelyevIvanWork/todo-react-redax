@@ -6,12 +6,12 @@ import {
     sortAllTaskAC,
     sortComplitedTaskAC,
     sortCurrentTaskAC
-} from "../../redux/FilterReducer";
+} from "../../../redux/FilterReducer";
 import {connect} from "react-redux";
 import {
     ALL_COMPLITED_TASK, ALL_DELETE_TASK,
     AllComplitedTaskActionCreator, AllDeleteTaskActionCreator
-} from "../../redux/TaskReducer";
+} from "../../../redux/TaskReducer";
 
 const TodoFilter = (props) => {
 

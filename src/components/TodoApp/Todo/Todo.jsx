@@ -2,11 +2,19 @@ import React from 'react'
 import TodoItem from "./TodoItem/TodoItem";
 import './Todo.css'
 import TodoFilter from "./TodoFilter/TodoFilter";
-import {SORT_ALL_TASK, SORT_COMPLITED_TASK, SORT_CURRENT_TASK} from "../redux/FilterReducer";
+import {SORT_ALL_TASK, SORT_COMPLITED_TASK, SORT_CURRENT_TASK} from "../../redux/FilterReducer";
 import {useMemo} from "react";
+import {useEffect, useState} from "react";
 
 
 const Todo = (props) => {
+
+    const [TODOS, setTODOS] = useState(props.tasks);
+    useEffect(() => {
+        props.addAllTodo()
+    }, TODOS);
+
+
     let todos = props.tasks
     let filterTodos = props.filterTodos
 
@@ -25,21 +33,31 @@ const Todo = (props) => {
 
     const memo = useMemo(() => getVisibleTodos(filterTodos, todos), [filterTodos, todos])
 
+    const validation = (value) => {
+        const reg = /^\s*$/;
+        return reg.test(value) === false
+    }
+
     let onAddTask = (e) => {
-        if (e.key === 'Enter' && props.newTask !== '') {
-            return props.onAddTaskClick()
+        if (e.key === 'Enter' && validation(props.newTask)) {
+            console.log(props.newTask)
+            return (
+                props.addTodo(props.newTask)
+            )
         }
     }
 
     let onChangeInput = (e) => {
         let text = e.target.value
         props.onNewTaskChange(text)
-
     }
 
+const cl = () => {
+    props.addTodo()
+}
     return (
         <div className="todo">
-            {/*<button onClick={props.setTodo}>Add</button>*/}
+            <button onClick={cl}>Add</button>
             <div className="todo__input-wrapper">
                 <input
                     className="todo__input"
@@ -57,6 +75,8 @@ const Todo = (props) => {
                             task={task}
                             onDeleteTaskClick={props.onDeleteTaskClick}
                             onComplitedTaskClick={props.onComplitedTaskClick}
+                            addTodoComplited={props.addTodoComplited}
+                            todoDelete={props.todoDelete}
                             key={task.id}
                         />)
                     }
