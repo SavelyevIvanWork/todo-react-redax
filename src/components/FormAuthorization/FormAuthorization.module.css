@@ -6,6 +6,7 @@
     width: 30%;
     margin: 0 auto;
     margin-top: 50px;
+    padding-bottom: 10px;
     box-shadow: 3px 3px 15px 1px dimgray,-3px -3px 15px 1px lightgrey;
 }
 
@@ -45,9 +46,9 @@
 .message {
     position: relative;
     box-sizing: border-box;
-    display: inline-block;
+    display: block;
     width: 100%;
-    margin: 15px 0;
+    margin: 8px 0;
     padding-right: 15px;
     padding-left: 55px;
     font-size: 12px;

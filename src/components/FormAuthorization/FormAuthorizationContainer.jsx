@@ -1,8 +1,8 @@
 import {connect} from "react-redux";
 import FormAuthorization from "./FormAuthorization";
-import {passwordUpdateAC, registrationAC, userNameUpdateAC} from "../redux/FormReducer";
+import {loginAC, passwordUpdateAC, registrationAC, userNameUpdateAC} from "../redux/FormReducer";
 
-const FormAuthorizationContainer = ({username, password, messages, error, userNameUpdate, passwordUpdate, userRegistration}) => {
+const FormAuthorizationContainer = ({username, password, messages, error, userNameUpdate, passwordUpdate, userRegistration, userLogin}) => {
     return <FormAuthorization userNameUpdate={userNameUpdate}
                               passwordUpdate={passwordUpdate}
                               username={username}
@@ -10,6 +10,7 @@ const FormAuthorizationContainer = ({username, password, messages, error, userNa
                               messages={messages}
                               error={error}
                               userRegistration={userRegistration}
+                              userLogin={userLogin}
     />
 }
 
@@ -35,6 +36,10 @@ const mapDispatchToProps = (dispatch) => {
 
         userRegistration: (username, password) => {
             dispatch(registrationAC(username, password))
+        },
+
+        userLogin: (username, password) => {
+            dispatch(loginAC(username, password))
         }
     }
 }

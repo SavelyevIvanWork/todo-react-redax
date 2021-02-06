@@ -32,6 +32,8 @@ const TaskReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: true,
+                error: '',
+                messages: {}
             }
         case REGISTRATION_SUCCESS:
             return {
@@ -76,6 +78,28 @@ export const registrationAC = (username, password) => {
         dispatch(loadingStartedAC());
         axios
             .post(`/todo/registration`, {
+                username,
+                password
+            })
+            .then(response => {
+                dispatch(registrationSuccessAC(response.data));
+            })
+            .catch(err => {
+                if (err.response) {
+                    dispatch(registrationFailureAC(err.message))
+                    dispatch(registrationSuccessAC(err.response.data))
+                } else {
+                    dispatch(registrationFailureAC(err.message))
+                }
+            })
+    }
+}
+
+export const loginAC = (username, password) => {
+    return (dispatch) => {
+        dispatch(loadingStartedAC());
+        axios
+            .post(`/todo/login`, {
                 username,
                 password
             })

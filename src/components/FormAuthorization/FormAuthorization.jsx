@@ -1,7 +1,7 @@
 import React from "react";
 import style from './FormAuthorization.module.css'
 
-const FormAuthorization = ({username, password, messages, error, userNameUpdate, passwordUpdate, userRegistration}) => {
+const FormAuthorization = ({username, password, messages, error, userNameUpdate, passwordUpdate, userRegistration, userLogin}) => {
 
     const userNameUpdateHandler = (e) => {
         const username = e.target.value
@@ -16,6 +16,19 @@ const FormAuthorization = ({username, password, messages, error, userNameUpdate,
     const userRegistrationHandler = (e) => {
         e.preventDefault()
         userRegistration(username, password)
+    }
+
+    const userLoginHandler = (e) => {
+        e.preventDefault()
+        userLogin(username, password)
+    }
+
+    const err = (messages) => {
+        if (messages.errors) {
+            const errors = messages.errors.errors.map(err => err.msg)
+            console.log(errors)
+            return errors
+        }
     }
 
     return (
@@ -44,7 +57,11 @@ const FormAuthorization = ({username, password, messages, error, userNameUpdate,
                         />
                     </div>
                     <div className={`${style.item} ${style.item__btn}`}>
-                        <button className={`${style.btn}`}>Log in</button>
+                        <button
+                            className={`${style.btn}`}>
+                            onClick={userLoginHandler}
+                            Log in
+                        </button>
                         <button
                             className={`${style.btn}`}
                             onClick={userRegistrationHandler}
@@ -52,10 +69,14 @@ const FormAuthorization = ({username, password, messages, error, userNameUpdate,
                             Register
                         </button>
                     </div>
-
                 </form>
-                { error ? <span className={`${style.message} ${style.message__error}`}>{messages.map((message) => message)}</span>
-                        : <span className={style.message}>{messages}</span>
+                {
+                    error ? <div>
+                            <span className={`${style.message} ${style.message__error}`}>{messages.message}</span>
+                            {messages.errors && err(messages).map(error => <span
+                                className={`${style.message} ${style.message__error}`}>{error}</span>)}
+                        </div>
+                        : <span className={`${style.message}`}>{messages.message}</span>
                 }
             </div>
         </>
