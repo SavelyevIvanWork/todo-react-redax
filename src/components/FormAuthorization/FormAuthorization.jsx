@@ -1,7 +1,8 @@
 import React from "react";
 import style from './FormAuthorization.module.css'
 
-const FormAuthorization = ({username, password, messages, error, userNameUpdate, passwordUpdate, userRegistration, userLogin}) => {
+const FormAuthorization = (
+    {username, password, messages, error, userNameUpdate, passwordUpdate, userRegistration, userLogin}) => {
 
     const userNameUpdateHandler = (e) => {
         const username = e.target.value
@@ -58,8 +59,10 @@ const FormAuthorization = ({username, password, messages, error, userNameUpdate,
                     </div>
                     <div className={`${style.item} ${style.item__btn}`}>
                         <button
-                            className={`${style.btn}`}>
+                            className={`${style.btn}`}
                             onClick={userLoginHandler}
+                        >
+
                             Log in
                         </button>
                         <button

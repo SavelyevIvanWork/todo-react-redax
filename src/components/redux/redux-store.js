@@ -16,9 +16,9 @@ let reducers = combineReducers({
 let store = createStore(reducers, applyMiddleware(thunk))
 
 // localStorage['state'] ? JSON.parse(localStorage.getItem('state')) : {}
-store.subscribe(() => {
-    localStorage.setItem('state', JSON.stringify(store.getState()))
-})
+// store.subscribe(() => {
+//     localStorage.setItem('state', JSON.stringify(store.getState()))
+// })
 
 window.store = store
 console.log(window.store.getState())

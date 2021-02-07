@@ -184,7 +184,7 @@ export const addTodoActionCreator = (message) => {
             .post(`/todo`, {
                 complited: false,
                 message
-            })
+            },{headers: {"Token": localStorage.getItem("Token")}})
             .then(response => {
                 dispatch(addTodoSuccess(response.data));
             })
@@ -198,7 +198,7 @@ export const addTodoAllActionCreator = () => {
     return (dispatch) => {
         dispatch(addTodoStarted());
         axios
-            .get(`/todo`)
+            .get(`/todo`,{headers: {"Token": localStorage.getItem("Token")}})
             .then(response => {
                 dispatch(addTodoALLSuccess(response.data));
             })
@@ -212,7 +212,7 @@ export const addTodoComplitedActionCreator = (todoID, todoComplited) => {
     return (dispatch) => {
         dispatch(addTodoStarted());
         axios
-            .put(`/todo/${todoID}`, {id: todoID, complited: todoComplited})
+            .put(`/todo/${todoID}`, {id: todoID, complited: todoComplited},{headers: {"Token": localStorage.getItem("Token")}})
             .then(response => {
                 dispatch(addTodoComplitedSuccess(response.data));
             })
@@ -226,7 +226,7 @@ export const deleteTodoActionCreator = (todoID) => {
     return (dispatch) => {
         dispatch(addTodoStarted());
         axios
-            .delete(`/todo/${todoID}`)
+            .delete(`/todo/${todoID}`,{headers: {"Token": localStorage.getItem("Token")}})
             .then(response => {
                 dispatch(addTodoDeleteSuccess(todoID));
             })

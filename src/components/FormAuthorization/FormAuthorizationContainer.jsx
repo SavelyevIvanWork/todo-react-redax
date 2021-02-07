@@ -2,7 +2,8 @@ import {connect} from "react-redux";
 import FormAuthorization from "./FormAuthorization";
 import {loginAC, passwordUpdateAC, registrationAC, userNameUpdateAC} from "../redux/FormReducer";
 
-const FormAuthorizationContainer = ({username, password, messages, error, userNameUpdate, passwordUpdate, userRegistration, userLogin}) => {
+const FormAuthorizationContainer = (
+    {username, password, messages, error, userNameUpdate, passwordUpdate, userRegistration, userLogin}) => {
     return <FormAuthorization userNameUpdate={userNameUpdate}
                               passwordUpdate={passwordUpdate}
                               username={username}
