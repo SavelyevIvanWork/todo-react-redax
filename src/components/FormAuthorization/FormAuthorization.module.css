@@ -1,10 +1,12 @@
+.app__wrapper {
+    width: 30%;
+    margin: 0 auto;
+}
+
 .title {
-    text-align: center;
 }
 
 .wrapper {
-    width: 30%;
-    margin: 0 auto;
     margin-top: 50px;
     padding-bottom: 10px;
     box-shadow: 3px 3px 15px 1px dimgray,-3px -3px 15px 1px lightgrey;
@@ -65,7 +67,7 @@
 .message__error::after {
     content: '';
     position: absolute;
-    top: 10px;
+    top: 8px;
     left: 20px;
     width: 20px;
     height: 2px;

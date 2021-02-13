@@ -46,7 +46,7 @@
     border: none;
     background: #ffffff url("../../../../Image/dustbin.svg") no-repeat center;
     background-size: cover;
-
+    outline: none;
 }
 
 .todo-item__button span {

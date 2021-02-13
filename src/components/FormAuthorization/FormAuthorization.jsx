@@ -1,13 +1,14 @@
-import React from "react";
 import style from './FormAuthorization.module.css'
+import FormHeader from "./FormHeader/FormHeader";
+import {loginAC, passwordUpdateAC, registrationAC, userNameUpdateAC} from "../../action-creators/form-action-creator";
+import {connect} from "react-redux";
+import {useCallback} from "react";
+
 
 const FormAuthorization = (
     {username, password, messages, error, userNameUpdate, passwordUpdate, userRegistration, userLogin}) => {
 
-    const userNameUpdateHandler = (e) => {
-        const username = e.target.value
-        userNameUpdate(username)
-    }
+    const userNameUp = useCallback((e) => userNameUpdate(e.target.value), [username])
 
     const userPasswordUpdateHandler = (e) => {
         const password = e.target.value
@@ -33,8 +34,8 @@ const FormAuthorization = (
     }
 
     return (
-        <>
-            <h1 className={style.title}>Please login or register</h1>
+        <div className={style.app__wrapper}>
+            <FormHeader />
             <div className={style.wrapper}>
                 <form action="">
                     <div className={style.item}>
@@ -44,7 +45,8 @@ const FormAuthorization = (
                             type="text"
                             value={username}
                             placeholder='Enter your user name'
-                            onChange={userNameUpdateHandler}
+                            onChange={userNameUp}
+                            autoFocus={true}
                         />
                     </div>
                     <div className={style.item}>
@@ -82,10 +84,38 @@ const FormAuthorization = (
                         : <span className={`${style.message}`}>{messages.message}</span>
                 }
             </div>
-        </>
+        </div>
     )
-
-
 }
 
-export default FormAuthorization
+const mapStateToProps = (state) => {
+    return {
+        username: state.FormReducer.username,
+        password: state.FormReducer.password,
+        isFetching: state.FormReducer.isFetching,
+        messages: state.FormReducer.messages,
+        error: state.FormReducer.error,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        userNameUpdate: (username) => {
+            dispatch(userNameUpdateAC(username))
+        },
+
+        passwordUpdate: (password) => {
+            dispatch(passwordUpdateAC(password))
+        },
+
+        userRegistration: (username, password) => {
+            dispatch(registrationAC(username, password))
+        },
+
+        userLogin: (username, password) => {
+            dispatch(loginAC(username, password))
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (FormAuthorization)

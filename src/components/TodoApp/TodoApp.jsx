@@ -1,16 +1,24 @@
 import React from "react"
-import TodoContainer from "./Todo/TodoContainer";
+import Header from "./Header/Header";
+import Todo from "./Todo/Todo";
+import {Redirect} from "react-router-dom";
+import {connect} from "react-redux";
 
-
-const TodoApp = () => {
+const TodoApp = ({isFetching}) => {
     return (
         <div className="wrapper">
-            <div className="title-wrapper">
-                <h3 className="title">Your todo list</h3>
-            </div>
-            <TodoContainer/>
+            <Header />
+            <Todo />
+            {!isFetching && <Redirect from='/' to='/login'/>}
         </div>
+
     )
 }
 
-export default TodoApp
+const mapStateToProps = (state) => {
+    return {
+        isFetching: state.FormReducer.isFetching,
+    }
+}
+
+export default connect(mapStateToProps) (TodoApp)

@@ -1,19 +1,16 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
-import TaskReducer from "./TaskReducer";
-import FilterReducer from "./FilterReducer";
+import TaskReducer from "./reducers/TaskReducer";
+import FilterReducer from "./reducers/FilterReducer";
 import thunk from "redux-thunk";
-import FormReducer from "./FormReducer";
+import FormReducer from "./reducers/FormReducer";
 
-
-
-
-let reducers = combineReducers({
+const reducers = combineReducers({
     TaskReducer,
     FilterReducer,
     FormReducer
 })
 
-let store = createStore(reducers, applyMiddleware(thunk))
+const store = createStore(reducers, applyMiddleware(thunk))
 
 // localStorage['state'] ? JSON.parse(localStorage.getItem('state')) : {}
 // store.subscribe(() => {

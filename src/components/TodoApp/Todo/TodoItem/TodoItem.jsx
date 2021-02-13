@@ -2,34 +2,27 @@ import React from "react";
 import "./TodoItem.css"
 import '../../../../Image/dustbin.svg'
 
-const TodoItem = (props) => {
-    let className = ''
-    if (props.task.complited === true) {
-        className = 'active'
-    }
-
-    const onChecked = (e) => {
-        props.addTodoComplited(props.task.id, props.task.complited = !props.task.complited)
+const TodoItem = ({todoCompleted, task, todoDelete}) => {
+    const onChecked = () => {
+        todoCompleted(task.id, task.completed)
     }
 
     return (
-        <li className={`todo-list__item ${className}`}
+        <li className={task.completed ? `todo-list__item active` : `todo-list__item`}
             onClick={onChecked}
-            id={props.task.id}
+            id={task.id}
         >
-            <span className={`todo-list__text`}>{props.task.message}</span>
+            <span className={`todo-list__text`}>{task.message}</span>
             <button className='todo-item__button'
                     onClick={(event) => {
                         event.stopPropagation()
-                        props.todoDelete(props.task.id)
+                        todoDelete(task.id)
                     }}>
                 <span>delete</span>
             </button>
         </li>
     )
 }
-
-
 
 
 export default TodoItem

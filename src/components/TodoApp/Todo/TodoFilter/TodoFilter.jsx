@@ -1,90 +1,85 @@
 import React from 'react'
 import './TodoFilter.css'
-import {
-    SORT_ALL_TASK,
-    SORT_COMPLITED_TASK, SORT_CURRENT_TASK,
-    sortAllTaskAC,
-    sortComplitedTaskAC,
-    sortCurrentTaskAC
-} from "../../../redux/FilterReducer";
 import {connect} from "react-redux";
 import {
-    ALL_COMPLITED_TASK, ALL_DELETE_TASK,
-    AllComplitedTaskActionCreator, AllDeleteTaskActionCreator
-} from "../../../redux/TaskReducer";
+    ALL_TASK_COMPLETED, ALL_TASK_DELETE,
+    SORT_ALL_TASK,
+    SORT_COMPLETED_TASK,
+    SORT_CURRENT_TASK
+} from "../../../../actions";
+import {
+    allTodoCompletedAC, AllTodoDeleteActionCreator
+} from "../../../../action-creators/task-action-creator";
+import {sortAllTaskAC, sortCompletedTaskAC, sortCurrentTaskAC} from "../../../../action-creators/filter-action-creator";
 
-const TodoFilter = (props) => {
-
-    let btnHandler = (e) => {
+const TodoFilter = ({onAllBtnClick, onCurrentBtnClick, onCompletedBtnClick, allTaskCompleted, allTaskDelete, tasks, baseFilter, }) => {
+    const btnHandler = (e) => {
         let id = e.target.id
         switch (id) {
             case SORT_ALL_TASK:
-                props.onAllBtnClick(id)
+                onAllBtnClick(id)
                 break
             case SORT_CURRENT_TASK:
-                props.onCurrentBtnClick(id)
+                onCurrentBtnClick(id)
                 break
-            case SORT_COMPLITED_TASK:
-                props.onComplitedBtnClick(id)
+            case SORT_COMPLETED_TASK:
+                onCompletedBtnClick(id)
                 break
-            case ALL_COMPLITED_TASK:
-                props.onAllComplitedBtnClick()
+            case ALL_TASK_COMPLETED:
+                allTaskCompleted()
                 break
-            case ALL_DELETE_TASK:
-                props.onAllDeleteBtnClick()
+            case ALL_TASK_DELETE:
+                allTaskDelete()
                 break
             default:
-                props.onAllBtnClick(id)
+                onAllBtnClick(id)
         }
     }
 
-
-    const taskComplited = []
-    props.tasks.filter((task) => {
-        return task.complited ? taskComplited.push(task) : null
+    const taskCompleted = []
+    tasks.filter((task) => {
+        return task.completed && taskCompleted.push(task)
     })
 
     return (
         <div className="todo-filter">
             <button
                 className={`btn todo-filter__btn--lightgrey todo-filter__btn--tasks-left`}
-                id={ALL_COMPLITED_TASK}
+                id={ALL_TASK_COMPLETED}
                 onClick={btnHandler}>
-                <span>{props.tasks.length}</span> tasks left
+                <span>{tasks.length}</span> tasks left
             </button>
 
             <div className="todo-filter__btn-wrapper">
                 <button
-                    className={`btn todo-filter__btn ${props.baseFilter === SORT_ALL_TASK ? 'todo-filter__btn--active' : ''}`}
+                    className={`btn todo-filter__btn ${baseFilter === SORT_ALL_TASK ? 'todo-filter__btn--active' : ''}`}
                     id={SORT_ALL_TASK}
                     onClick={btnHandler}
                 >
                     All
                 </button>
                 <button
-                    className={`btn todo-filter__btn ${props.baseFilter === SORT_CURRENT_TASK ? 'todo-filter__btn--active' : ''}`}
+                    className={`btn todo-filter__btn ${baseFilter === SORT_CURRENT_TASK ? 'todo-filter__btn--active' : ''}`}
                     id={SORT_CURRENT_TASK}
                     onClick={btnHandler}
                 >
                     ToDo
                 </button>
                 <button
-                    className={`btn todo-filter__btn ${props.baseFilter === SORT_COMPLITED_TASK ? 'todo-filter__btn--active' : ''}`}
-                    id={SORT_COMPLITED_TASK}
+                    className={`btn todo-filter__btn ${baseFilter === SORT_COMPLETED_TASK ? 'todo-filter__btn--active' : ''}`}
+                    id={SORT_COMPLETED_TASK}
                     onClick={btnHandler}
                 >
                     Completed
                 </button>
             </div>
             {
-                taskComplited.length > 0
-                ? <button
-                        className={`btn todo-filter__btn--lightgrey todo-filter__btn--clear-complited`}
-                        id={ALL_DELETE_TASK}
-                        onClick={btnHandler}>
-                        Clear completed
-                    </button>
-                : ''
+                taskCompleted.length > 0 && <button
+                    className={`btn todo-filter__btn--lightgrey todo-filter__btn--clear-completed`}
+                    id={ALL_TASK_DELETE}
+                    onClick={btnHandler}>
+                    Clear completed
+                </button>
             }
 
         </div>
@@ -104,20 +99,20 @@ let mapDispatchToProps = (dispatch) => {
             dispatch(sortAllTaskAC(id))
         },
 
-        onComplitedBtnClick: (id) => {
-            dispatch(sortComplitedTaskAC(id))
+        onCompletedBtnClick: (id) => {
+            dispatch(sortCompletedTaskAC(id))
         },
 
         onCurrentBtnClick: (id) => {
             dispatch(sortCurrentTaskAC(id))
         },
 
-        onAllComplitedBtnClick: () => {
-            dispatch(AllComplitedTaskActionCreator())
+        allTaskCompleted: () => {
+            dispatch(allTodoCompletedAC())
         },
 
-        onAllDeleteBtnClick: () => {
-            dispatch(AllDeleteTaskActionCreator())
+        allTaskDelete: () => {
+            dispatch(AllTodoDeleteActionCreator())
         },
     }
 }

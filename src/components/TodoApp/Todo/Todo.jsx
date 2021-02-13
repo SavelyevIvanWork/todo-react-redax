@@ -2,70 +2,81 @@ import React from 'react'
 import TodoItem from "./TodoItem/TodoItem";
 import './Todo.css'
 import TodoFilter from "./TodoFilter/TodoFilter";
-import {SORT_ALL_TASK, SORT_COMPLITED_TASK, SORT_CURRENT_TASK} from "../../redux/FilterReducer";
 import {useMemo} from "react";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
+import {SORT_ALL_TASK, SORT_COMPLETED_TASK, SORT_CURRENT_TASK} from "../../../actions";
+import {
+    addTodoActionCreator,
+    addTodoAllActionCreator,
+    completedTaskActionCreator,
+    deleteTaskActionCreator,
+    deleteTodoActionCreator,
+    todoCompletedAC,
+    updateNewTaskActionCreator
+} from "../../../action-creators/task-action-creator";
+import {connect} from "react-redux";
+import Preloader from '../../../Image/loading-svgrepo-com.svg';
+import '../../../Image/dustbin.svg'
+import { debounce } from 'lodash';
 
-
-const Todo = (props) => {
-
-    const [TODOS, setTODOS] = useState(props.tasks);
-    useEffect(() => {
-        props.addAllTodo()
-    }, TODOS);
-
-
-    let todos = props.tasks
-    let filterTodos = props.filterTodos
-
-    const getVisibleTodos = (filterTodos, todos) => {
-        switch (filterTodos) {
-            case SORT_ALL_TASK:
-                return todos
-            case SORT_COMPLITED_TASK:
-                return todos.filter(t => t.complited)
-            case SORT_CURRENT_TASK:
-                return todos.filter(t => !t.complited)
-            default:
-                throw new Error('Unknown filter: ' + filterTodos)
-        }
+const getVisibleTodos = (filterTodos, todos) => {
+    switch (filterTodos) {
+        case SORT_ALL_TASK:
+            return todos
+        case SORT_COMPLETED_TASK:
+            return todos.filter(t => t.completed)
+        case SORT_CURRENT_TASK:
+            return todos.filter(t => !t.completed)
+        default:
+            throw new Error('Unknown filter: ' + filterTodos)
     }
+}
 
-    const memo = useMemo(() => getVisibleTodos(filterTodos, todos), [filterTodos, todos])
+const Todo = ({tasks, filterTodos, onDeleteTaskClick, onCompletedTaskClick,
+                  onNewTaskChange, newTask, addAllTodo, todoCompleted, todoDelete, addTodo, loading
+              }) => {
+
+    useEffect(() => {
+        addAllTodo()
+    }, []);
+
+    const memo = useMemo(() => getVisibleTodos(filterTodos, tasks), [filterTodos, tasks])
+
 
     const validation = (value) => {
         const reg = /^\s*$/;
-        return reg.test(value) === false
+        return !reg.test(value)
     }
 
-    let onAddTask = (e) => {
-        if (e.key === 'Enter' && validation(props.newTask)) {
-            console.log(props.newTask)
-            return (
-                props.addTodo(props.newTask)
-            )
+    const onAddTask = (e) => {
+        if (e.key === 'Enter' && validation(newTask)) {
+            addTodo(newTask)
         }
     }
 
-    let onChangeInput = (e) => {
-        let text = e.target.value
-        props.onNewTaskChange(text)
-    }
+    const onAddTaskDebounce = debounce(onAddTask,500)
 
-const cl = () => {
-    props.addTodo()
-}
+    const onChangeInput = (e) => {
+        const text = e.target.value
+        onNewTaskChange(text)
+    }
     return (
         <div className="todo">
-            <button onClick={cl}>Add</button>
+            {
+                loading && <div className='loader-wrapper'>
+                    <div className="loader"></div>
+                </div>
+            }
+            {/*<img src={Preloader} alt=""/>*/}
             <div className="todo__input-wrapper">
                 <input
                     className="todo__input"
                     type="text"
                     placeholder='Enter your task name here'
-                    value={props.newTask}
+                    value={newTask}
                     onChange={onChangeInput}
-                    onKeyDown={onAddTask}
+                    onKeyDown={onAddTaskDebounce}
+                    autoFocus={true}
                 />
             </div>
             <div className="todo__list">
@@ -73,20 +84,61 @@ const cl = () => {
                     {
                         memo.map((task) => <TodoItem
                             task={task}
-                            onDeleteTaskClick={props.onDeleteTaskClick}
-                            onComplitedTaskClick={props.onComplitedTaskClick}
-                            addTodoComplited={props.addTodoComplited}
-                            todoDelete={props.todoDelete}
+                            onDeleteTaskClick={onDeleteTaskClick}
+                            onCompletedTaskClick={onCompletedTaskClick}
+                            todoCompleted={todoCompleted}
+                            todoDelete={todoDelete}
                             key={task.id}
                         />)
                     }
 
                 </ul>
             </div>
-
-            {props.tasks.length > 0 && <TodoFilter />}
+            {tasks.length > 0 && <TodoFilter/>}
         </div>
     )
 }
 
-export default Todo
+const mapStateToProps = (state) => {
+    return {
+        tasks: state.TaskReducer.tasks,
+        newTask: state.TaskReducer.newTask,
+        filterTodos: state.FilterReducer,
+        loading: state.TaskReducer.loading
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onDeleteTaskClick: (taskID) => {
+            dispatch(deleteTaskActionCreator(taskID))
+        },
+
+        onCompletedTaskClick: (taskID) => {
+            dispatch(completedTaskActionCreator(taskID))
+        },
+
+        onNewTaskChange: (text) => {
+            dispatch(updateNewTaskActionCreator(text))
+        },
+
+        addTodo: (message) => {
+            dispatch(addTodoActionCreator(message))
+        },
+
+        addAllTodo: () => {
+            dispatch(addTodoAllActionCreator())
+        },
+
+        todoCompleted: (todoID, todoCompleted) => {
+            dispatch(todoCompletedAC(todoID, todoCompleted))
+        },
+
+        todoDelete: (todoID) => {
+            dispatch(deleteTodoActionCreator(todoID))
+        },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Todo)
+
